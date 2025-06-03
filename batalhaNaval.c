@@ -5,6 +5,54 @@
 // Siga os comentários para implementar cada parte do desafio.
 
 int main() {
+     int tabuleiro [10][10] = {0}; // tabuleiro inicial
+    int navio1 [3] = {3}; //navio 1 de tamanho 3
+    int navio2 [3] = {3}; // navio 2 de tamanho 3
+    int i,j;
+    int tamanho1 = sizeof(navio1) / sizeof(navio1[0]); // tamanho do navio 1
+    int tamanho2 = sizeof(navio2) / sizeof(navio2[0]); // tamanho do navio 2
+    int posicaoinicial1 = 4; // posição inicial do navio 1
+    int posicaoinicial2 = 5; // posição inicial do navio 2
+
+    // verifica se a posição inicial do navio 1 é válida para que o navio esteja dentro do tabuleiro
+    if (posicaoinicial1 + tamanho1 > 10) {
+        printf("O navio 1 não está fora dos limites do tabuleiro, escolha outra posição inicial!\n");
+        return 1; // encerra o programa se a posição inicial for inválida
+    }
+    // verifica se a posição inicial do navio 2 é válida para que o navio esteja dentro do tabuleiro
+    if (posicaoinicial2 + tamanho2 > 10) {
+        printf("O navio 2 não está fora dos limites do tabuleiro, escolha outra posição inicial!\n");
+        return 1; // encerra o programa se a posição inicial for inválida
+    }
+    
+    // Posiciona navio1 na linha 2, colunas 4, 5 e 6 (horizontal)
+    for (i = 0; i < tamanho1 ; i++) {
+        tabuleiro[2][posicaoinicial1 + i] = 3; // representa navio1, sendo colocado na sua posição inicial mais tres unidades para a direita
+    }
+
+    //Verificar se o navio 2 irá se sobrepor ao navio 1
+    for (i = 0; i < tamanho2; i++) {
+        if (tabuleiro[posicaoinicial2 + i][7] != 0) {
+            printf("O navio 2 não pode ser posicionado nesta nessa posição!\n");
+            return 1; // encerra o programa se houver sobreposição
+        }
+    }
+
+    // Posiciona navio2 na coluna 7, linhas 5, 6 e 7 (vertical)
+    for (i = 0; i < tamanho2; i++) {
+        tabuleiro[posicaoinicial2 + i][7] = 3; //representa navio2, sendo colocado na sua posição inicial mais tres unidades para baixo
+    }
+
+    //exibir tabuleiro
+    for (i = 0; i < 10; i++) {
+        for ( j = 0; j < 10; j++)
+    {
+        printf("%d ",tabuleiro[i][j]);
+    }
+    printf("\n");
+    }
+ 
+
     // Nível Novato - Posicionamento dos Navios
     // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
     // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
