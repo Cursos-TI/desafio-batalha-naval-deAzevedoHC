@@ -67,6 +67,60 @@ void naviodiagonal_esquerda(int tabuleiro[10][10], int posicao[2], int tamanho) 
     }
 }
 
+void ataquecone(int tabuleiro[10][10], int posicao[2]) {
+    // Verifica se a posição do ataque está dentro do tabuleiro
+    if (posicao[0] < 0 || posicao[0] >= 10 || posicao[1] < 0 || posicao[1] >=10) {
+        printf("posição de ataque inválida!\n");
+        return;
+    }
+    // Marca ataque no tabuleiro
+    for(int i=0; i<3; i++) {
+        int linha = posicao[0] + i;
+        if (linha >= 10) break; // evita ultrapassar limites do tabuleiro
+        for (int j = posicao[1] - i; j <= posicao[1] + i; j++) {
+            if (j >= 0 && j < 10) {
+                tabuleiro[linha][j] = 1;
+            }
+        }
+        
+    }
+}
+
+void ataquecruz(int tabuleiro[10][10], int posicao[2]) {
+    // Verifica se a posição está dentro do tabuleiro
+    if (posicao[0] < 0 || posicao[0] >=10 || posicao[1] < 0 || posicao[1] >=10) {
+        printf("posição de ataque inválida!\n");
+        return;
+    }
+    // Marca a linha acima do centro
+    tabuleiro[posicao[0] -1][posicao[1]] = 1;
+    // Marca a linha do centro
+    for(int j = posicao[1] -2; j <= posicao[1] +2; j++) {
+        tabuleiro[posicao[0]][j] = 1;
+    }
+    // Marca a linha abaixo do centro
+    tabuleiro[posicao[0] + 1][posicao[1]] = 1;
+}
+
+void ataqueoctaedro(int tabuleiro[10][10], int posicao[2]) {
+    int centro_linha = posicao[0];
+    int centro_coluna = posicao[1];
+    // Verifica se a posição do ataque está dentro do tabuleiro
+    if (posicao[0] < 0 || posicao[0] >= 10 || posicao[1] < 0 || posicao[1] >= 10) {
+        printf("posição de ataque inválida!\n");
+        return;
+    }
+    // Marca ataque no tabuleiro
+     for (int i = -2; i <= 2; i++) {
+        int linha = centro_linha + i;
+        int alcance = (i < 0) ? 2 + i : 2 - i;  // quantidade de colunas à esquerda e direita
+        for (int j = -alcance; j <= alcance; j++) {
+            int coluna = centro_coluna + j;
+            tabuleiro[linha][coluna] = 1;
+        }
+    }
+}
+
 
 int main() {
    int tabuleiro [10][10] = {0}; // tabuleiro inicial
@@ -85,17 +139,28 @@ int main() {
     int posicaoinicial4 [1][2] = {{1, 8}}; // posição inicial do navio 4
 
     //colocando navio 1 horizontal
-    naviohorizontal(tabuleiro, posicaoinicial1[0], tamanho1);
+    //naviohorizontal(tabuleiro, posicaoinicial1[0], tamanho1);
 
     //colocando navio 2 vertical
-    naviovertical(tabuleiro, posicaoinicial2[0], tamanho2);
+    //naviovertical(tabuleiro, posicaoinicial2[0], tamanho2);
 
     //colocando navio 3 diagonal direita
-    naviodiagonal_direita(tabuleiro, posicaoinicial3[0], tamanho3);
+    //naviodiagonal_direita(tabuleiro, posicaoinicial3[0], tamanho3);
 
     //colocando navio 4 diagonal esquerda
-    naviodiagonal_esquerda(tabuleiro, posicaoinicial4[0], tamanho4);
+    //naviodiagonal_esquerda(tabuleiro, posicaoinicial4[0], tamanho4);
 
+    // executando ataque em cone na posição (2, 2)
+    int posicaoataque[2] = {0, 2};
+    ataquecone(tabuleiro, posicaoataque);
+
+    // executando ataque em cruz na posiçao (5, 5)
+    int posicaoataque2[2] = {4, 7};
+    ataquecruz(tabuleiro, posicaoataque2);
+
+    // executa ataque em octaedro na posição (7, 7)
+    int posicaoataque3[2] = {7, 2};
+    ataqueoctaedro(tabuleiro, posicaoataque3);
 
     //exibir tabuleiro
     for (i = 0; i < 10; i++) {
